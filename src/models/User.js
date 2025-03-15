@@ -2,6 +2,10 @@ const users = [
   {id: 1,
     email: 'aaaaaa@aaaaaa.aaaaaa',
     password: 'aaaaaa'
+  },
+  {id: 2,
+    email: 'bbbbbb@bbbbbb.bbbbbb',
+    password: 'bbbbbb'
   }
 ]; // В реальном приложении используйте базу данных
 

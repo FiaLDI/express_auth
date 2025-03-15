@@ -4,32 +4,41 @@ import jwt from 'jsonwebtoken'
 
 const chats = [
     {
-        chat_id: 1,
-        name: "My chat",
-        lastmessage: "hi",
-        avatar: '/img/icon.png',
+        id: 1,
+        name: "My chat 0",
         type: "ls",
-        owner: 5
+        lastmessage: "hi",
+        created_at: '',
+        updated_at: '',
+        avatar_url: '/img/icon.png',
+        creator: 0,
+        owner: 5,
     },
     {
-        chat_id: 2,
-        name: "My chat2",
-        lastmessage: "hi",
-        avatar: '/img/icon.png',
+        id: 2,
+        name: "My chat 1",
         type: "ls",
-        owner: 1
+        lastmessage: "hi",
+        created_at: '',
+        updated_at: '',
+        avatar_url: '/img/icon.png',
+        creator: 1,
+        owner: 2,
     },
     {
-        chat_id: 3,
-        name: "My chat3",
+        id: 3,
+        name: "My chat 2",
+        type: "ls",
         lastmessage: "hi",
-        avatar: '/img/icon.png',
-        isGroup: false,
-        owner: 1
+        created_at: '',
+        updated_at: '',
+        avatar_url: '/img/icon.png',
+        creator: 0,
+        owner: 1,
     },
 ] // Все чаты
 const messages = {
-    1: []
+    
 }; // Сообщения по ID чата (messages[chatId] = [...])
 
 const getChats = async (req, res) => {
@@ -38,7 +47,7 @@ const getChats = async (req, res) => {
     if (!token) return res.sendStatus(401);
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-    res.json(chats.filter(val => val.owner == decoded?.id))
+    res.json(chats.filter(val => val.owner == decoded?.id || val.creator == decoded?.id))
     //res.json(chats.filter(val => val))  ;
 }
   

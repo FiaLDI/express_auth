@@ -6,7 +6,8 @@ import authRoutes from './routes/authRoutes.js';
 import chatrouter from './routes/ChatRoutes.js';
 import { Server } from 'socket.io';
 import http from 'http';
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
+import { v4 as uuidv4 } from "uuid";
 
 dotenv.config();
 
@@ -56,12 +57,13 @@ io.on('connection', (socket) => {
 
   socket.on('send-message', (msg) => {
     const { room, text } = msg;
-
+    
     if (rooms[room]) {
       const message = {
-        id: Date.now(),
-        text: text,
-        user: socket.user.username,
+        id: uuidv4(),
+        content: text,
+        user_id: socket.user.id,
+        is_edited: false,
         timestamp: new Date().toLocaleTimeString(),
       };
 

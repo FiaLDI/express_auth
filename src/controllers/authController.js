@@ -26,11 +26,11 @@ const login = async (req, res) => {
       res.cookie("refresh_token", refreshToken, {
         httpOnly: true,
         secure: false,
-        sameSite: "Lax",
+        sameSite: "Strict",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
   
-      res.json({ access_token: accessToken });
+      res.json({ access_token: accessToken, username: user.id });
     } catch (error) {
       res.status(500).json({ error: "Internal server error" });
     }
@@ -54,7 +54,7 @@ const refresh = async (req, res) => {
     const accessToken = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, {
       expiresIn: "15m",
     });
-    res.json({ access_token: accessToken });
+    res.json({ access_token: accessToken, username: user.id });
   } catch (error) {
     res.status(401).json({ error: "Invalid refresh token" });
   }

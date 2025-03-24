@@ -2,20 +2,25 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import fs from 'fs';
 import authRoutes from './routes/authRoutes.js';
 import chatrouter from './routes/ChatRoutes.js';
 import { Server } from 'socket.io';
-import http from 'http';
+import https from 'https';
 import jwt from 'jsonwebtoken';
 import { v4 as uuidv4 } from "uuid";
 
 dotenv.config();
+const options = {
+  key: fs.readFileSync('./src/selfsigned_key.pem'),
+  cert: fs.readFileSync('./src/selfsigned.pem'),
+};
 
 const app = express();
-const server = http.createServer(app);
+const server = https.createServer(options, app);
 export const io = new Server(server, {
   cors: {
-    origin: "*",
+    origin: "https://26.234.138.233:5173",
   },
 });
 
@@ -57,7 +62,7 @@ io.on('connection', (socket) => {
 
   socket.on('send-message', (msg) => {
     const { room, text } = msg;
-    
+    console.log(room)
     if (rooms[room]) {
       const message = {
         id: uuidv4(),
@@ -66,7 +71,7 @@ io.on('connection', (socket) => {
         is_edited: false,
         timestamp: new Date().toLocaleTimeString(),
       };
-
+      
       rooms[room].push(message); // Сохраняем сообщение в комнате
       io.to(room).emit('new-message', message); // Отправляем сообщение всем в комнате
     } else {
@@ -77,11 +82,15 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('Пользователь отключился');
   });
+
+  socket.on('produce', ()=> {
+    console.log('aga')
+  })
 });
 
 app.use(cookieParser());
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://26.234.138.233:5173",
     credentials: true,
 }));
 

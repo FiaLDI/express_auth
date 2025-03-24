@@ -10,7 +10,7 @@ const chats = [
         lastmessage: "hi",
         created_at: '',
         updated_at: '',
-        avatar_url: '/img/icon.png',
+        avatar_url: '/img/icons.png',
         creator: 0,
         owner: 5,
     },

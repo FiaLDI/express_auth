@@ -5,6 +5,7 @@ import cors from 'cors';
 import fs from 'fs';
 import authRoutes from './routes/authRoutes.js';
 import chatrouter from './routes/ChatRoutes.js';
+import serverRouter from './routes/serverRoutes.js';
 import { Server } from 'socket.io';
 import https from 'https';
 import jwt from 'jsonwebtoken';
@@ -17,6 +18,10 @@ const options = {
 };
 
 const app = express();
+app.use(cors({
+    origin: "https://26.234.138.233:5173",
+    credentials: true,
+}));
 const server = https.createServer(options, app);
 export const io = new Server(server, {
   cors: {
@@ -54,6 +59,7 @@ io.on('connection', (socket) => {
     if (!rooms[room]) {
       rooms[room] = []; // Создаем комнату, если она не существует
     }
+    
     socket.join(room);
     socket.emit('message-history', rooms[room]);
     console.log(`Пользователь присоединился к комнате: ${room}`);
@@ -61,13 +67,15 @@ io.on('connection', (socket) => {
   });
 
   socket.on('send-message', (msg) => {
-    const { room, text } = msg;
+    const { room, text, user_name } = msg;
+    console.log(msg)
     console.log(room)
     if (rooms[room]) {
       const message = {
         id: uuidv4(),
         content: text,
         user_id: socket.user.id,
+        user_name: user_name,
         is_edited: false,
         timestamp: new Date().toLocaleTimeString(),
       };
@@ -83,20 +91,15 @@ io.on('connection', (socket) => {
     console.log('Пользователь отключился');
   });
 
-  socket.on('produce', ()=> {
-    console.log('aga')
-  })
 });
 
 app.use(cookieParser());
-app.use(cors({
-    origin: "https://26.234.138.233:5173",
-    credentials: true,
-}));
+
 
 app.use(express.json());
 app.use("/api", authRoutes);
 app.use("/api", chatrouter);
+app.use("/api", serverRouter)
 
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => { // Запускаем сервер

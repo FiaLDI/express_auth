@@ -62,7 +62,7 @@ const postChats = async(req, res) => {
     res.status(201).json(newChat);
 };
 
-export { getChats, postChats };
+export { chats, getChats, postChats };
   
 // // API для сообщений
 // app.get("/api/chats/:id/messages", (req, res) => {

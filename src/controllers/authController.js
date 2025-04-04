@@ -54,7 +54,7 @@ const refresh = async (req, res) => {
     const accessToken = jwt.sign({ id: user.id }, process.env.ACCESS_TOKEN_SECRET, {
       expiresIn: "15m",
     });
-    res.json({ access_token: accessToken, username: user.id });
+    res.json({ access_token: accessToken, username: user.user_name });
   } catch (error) {
     res.status(401).json({ error: "Invalid refresh token" });
   }

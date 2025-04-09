@@ -1,10 +1,8 @@
-const express = require("express");
+import express from 'express';
 
-const { getServers, getServerInfo } = require("../controllers/serverController");
+import { getServers, getServerInfo } from "../controllers/serverController.js";
 
-const serverRouter = express.Router();
+export const serverRouter = express.Router();
 
 serverRouter.get("/server", getServers);
 serverRouter.get("/server/:id", getServerInfo);
-
-module.exports = serverRouter;

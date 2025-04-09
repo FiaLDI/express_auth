@@ -13,6 +13,7 @@ const chats = [
         avatar_url: '/img/icons.png',
         creator: 0,
         owner: 5,
+        voice: 1,
     },
     {
         id: 2,
@@ -24,6 +25,7 @@ const chats = [
         avatar_url: '/img/icon.png',
         creator: 1,
         owner: 2,
+        voice: 2,
     },
     {
         id: 3,
@@ -35,6 +37,7 @@ const chats = [
         avatar_url: '/img/icon.png',
         creator: 0,
         owner: 1,
+        voice: 2,
     },
 ] // Все чаты
 const messages = {

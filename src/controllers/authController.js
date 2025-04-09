@@ -1,7 +1,7 @@
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
+import jwt from "jsonwebtoken";
+import { User } from "../models/User.js";
 
-const login = async (req, res) => {
+export const login = async (req, res) => {
     try {
       const { email, password } = req.body;
   
@@ -36,7 +36,7 @@ const login = async (req, res) => {
     }
   };
 
-const refresh = async (req, res) => {
+export const refresh = async (req, res) => {
   const refreshToken = req.cookies.refresh_token;
   if (!refreshToken) {
     return res.status(401).json({ error: "Refresh token missing" });
@@ -60,11 +60,11 @@ const refresh = async (req, res) => {
   }
 };
 
-const protected = (req, res) => {
+export const protectedRoute = (req, res) => {
   res.json({ message: "This is a protected route", user: req.user });
 };
 
-const logout = (req, res) => {
+export const logout = (req, res) => {
     res.clearCookie("refresh_token", {
         httpOnly: true,
         secure: false, // Для локальной разработки
@@ -73,5 +73,3 @@ const logout = (req, res) => {
       });
     res.json({message: 'User logout'})
 }
-
-module.exports = { login, refresh, protected, logout };

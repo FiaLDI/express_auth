@@ -20,13 +20,16 @@ const servers = [
         id: 1,
         name: "server 0",
         owner: 1,
-        chats: [1, 2],
-        voices: [1]
+        user: [1,],
+        chats: [2, 3],
+        voices: [1, 2]
     },
     {
         id: 2,
         name: "server 1",
         owner: 1,
+        user: [1,],
+        
         chats: [],
         voices: [2]
     },
@@ -34,17 +37,18 @@ const servers = [
         id: 3,
         name: "server 2",
         owner: 2,
-        chats: [1, 2],
+        user: [1,],
+        chats: [3, 2],
+        voices: [2],
     },
 ] 
   
 const getServers = async (req, res) => {
-    
     const token = req.headers['authorization']?.split(' ')[1]; // Extract token from header
     if (!token) return res.sendStatus(401);
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-    res.json(servers.filter(val => val.owner == decoded?.id))
+    res.json(servers.filter(val => val.owner == decoded?.id || val.user.includes(decoded.id)))
 }
 
 const getServerInfo = async (req, res) => {
@@ -59,7 +63,7 @@ const getServerInfo = async (req, res) => {
         return res.status(404).json({ message: 'Server not found' });
     }
 
-    if (server.owner !== decoded.id) {
+    if (server.owner !== decoded.id && !server.user.includes(decoded.id)) {
         return res.status(403).json({ message: 'Access denied' });
     }
 

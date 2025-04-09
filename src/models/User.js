@@ -11,7 +11,7 @@ const users = [
   }
 ]; // В реальном приложении используйте базу данных
 
-class User {
+export class User {
   static async create({ email, password }) {
     const user = { id: users.length + 1, email, password };
     users.push(user);
@@ -26,5 +26,3 @@ class User {
     return users.find((user) => user.id === id);
   }
 }
-
-module.exports = User;

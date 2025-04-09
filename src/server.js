@@ -3,9 +3,9 @@ import express from 'express';
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import fs from 'fs';
-import authRoutes from './routes/authRoutes.js';
-import chatrouter from './routes/ChatRoutes.js';
-import serverRouter from './routes/serverRoutes.js';
+import { authRoutes } from './routes/authRoutes.js';
+import { chatRouter }from './routes/ChatRoutes.js';
+import { serverRouter } from './routes/serverRoutes.js';
 import { Server } from 'socket.io';
 import https from 'https';
 import jwt from 'jsonwebtoken';
@@ -98,7 +98,7 @@ app.use(cookieParser());
 
 app.use(express.json());
 app.use("/api", authRoutes);
-app.use("/api", chatrouter);
+app.use("/api", chatRouter);
 app.use("/api", serverRouter)
 
 const PORT = process.env.PORT || 4000;

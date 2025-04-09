@@ -1,6 +1,6 @@
-const jwt = require("jsonwebtoken");
+import jwt from 'jsonwebtoken'
 
-const authenticate = (req, res, next) => {
+export const authenticate = (req, res, next) => {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
 
@@ -17,5 +17,3 @@ const authenticate = (req, res, next) => {
     res.status(401).json({ error: "Invalid access token" });
   }
 };
-
-module.exports = { authenticate };
